@@ -1,0 +1,15 @@
+ sudo apt update
+   14  sudo apt-get install -y python3-pip
+   15  sudo apt install -y upx
+   16  wget https://dl.google.com/go/go1.17.7.linux-amd64.tar.gz
+   17  sudo tar -C /usr/local -xzf go1.17.7.linux-amd64.tar.gz
+   18  cd /home/vagrant
+   19  vim ~/.bashrc
+   20  source ~/.bashrc
+   21  cd /home/vagrant/caldera
+   22  ls
+   23  git clone https://github.com/mitre/caldera.git --recursive --branch x.x.x
+   24  git clone https://github.com/mitre/caldera.git --recursive --branch 4.0.0-beta
+   25  cd /home/vagrant
+   26  cd caldera
+   27  sudo pip3 install -r requirements.txt
