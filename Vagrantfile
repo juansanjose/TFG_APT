@@ -38,7 +38,8 @@ Vagrant.configure("2") do |config|
   
   # Transfer config file snippets into VM
   fw.vm.provision "file", source: "files", destination: "files"
-  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  fw.vm.synced_folder ".", "/vagrant", disabled: true
 
   # Bootstrap OPNsense
   fw.vm.provision 'shell', inline: <<-SHELL
@@ -72,13 +73,14 @@ Vagrant.configure("2") do |config|
     # # Change sudoers file to reference user instead of group
     sed -i '' -e 's/^%//' /usr/local/etc/sudoers.d/vagrant
     # # Reboot the system
-
+    cp /home/vagrant/files/customnmap.xml /usr/local/opnsense/scripts/suricata/metadata/rules
     cp -f files/config2.xml /usr/local/etc/config.xml
 
     shutdown -r now
 
   SHELL
   
+
 end
 config.vm.define "logger" do |cfg|
   cfg.vm.box = "bento/ubuntu-20.04"
@@ -127,8 +129,9 @@ config.vm.define "caldera" do |trst|
   # trst.vm.provision :shell, :inline => "python3 /home/vagrant/app.py"
   
   #ejecutar script de caldera
-  trst.vm.provision "file",run: "always", source: "scriptcaldera1.py", destination: "/home/vagrant/scriptcaldera1.py"
-  trst.vm.provision "file",run: "always", source: "windows.json", destination: "/home/vagrant/windows.json"
+  trst.vm.provision "file", source: "scriptcaldera1.py", destination: "/home/vagrant/scriptcaldera1.py"
+  trst.vm.provision "file", source: "windows.json", destination: "/home/vagrant/windows.json"
+  trst.vm.provision "file", source: "files", destination: "files"
 
   
 
@@ -192,7 +195,7 @@ config.vm.define "caldera" do |trst|
 
 
     cfg.vm.provider "virtualbox" do |vb, override|
-      vb.gui = false
+      vb.gui = true
       vb.name = "dc.windomain.local"
       vb.default_nic_type = "82545EM"
       vb.customize ["modifyvm", :id, "--memory", 2048]
@@ -246,7 +249,7 @@ config.vm.define "caldera" do |trst|
     
 
     cfg.vm.provider "virtualbox" do |vb, override|
-      vb.gui = false
+      vb.gui = true
       vb.name = "wef.windomain.local"
       vb.default_nic_type = "82545EM"
       vb.customize ["modifyvm", :id, "--memory", 2048]
@@ -299,7 +302,7 @@ config.vm.define "caldera" do |trst|
 
     
     cfg.vm.provider "virtualbox" do |vb, override|
-      vb.gui = false
+      vb.gui = true
       vb.name = "win10.windomain.local"
       vb.default_nic_type = "82545EM"
       vb.customize ["modifyvm", :id, "--memory", 2048]
